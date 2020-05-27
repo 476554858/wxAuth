@@ -5,9 +5,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import wx.auth.wxAuth.entity.News;
-import wx.auth.wxAuth.entity.NewsMessage;
-import wx.auth.wxAuth.entity.TextMessage;
+import wx.auth.wxAuth.entity.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -77,7 +75,9 @@ public class MessageUtil {
         sb.append("欢迎您的关注，请按照菜单提示进行操作：\n\n");
         sb.append("1、课程介绍\n");
         sb.append("2、慕课网介绍\n");
-        sb.append("3、词组翻译\n\n");
+        sb.append("3、词组翻译\n");
+        sb.append("4、图片\n");
+        sb.append("5、音乐\n\n");
         sb.append("回复？调出此菜单。");
         return sb.toString();
     }
@@ -124,7 +124,7 @@ public class MessageUtil {
         news.setTitle("慕课网介绍");
         news.setDescription("慕课网是垂直的互联网IT技能免费学习网站。以独家视频教程、在线编程工具、学习计划、问答社区为核心特色。在这里，你可以找到最好的互联网技术牛人，也可以通过免费的在线公开视频课程学习国内领先的互联网IT技术。慕课网课程涵盖前端开发、PHP、Html5、Android、iOS、Swift等IT前沿技术语言，包括基础课程、实用案例、高级分享三大类型，适合不同阶段的学习人群。");
 
-        news.setPicUrl("http://139.129.19.66/nat123CacheFolder/34333038343130322E6E61743132332E6363/81a0f55d9df3483db8da1e36e7e68990CD30CE39D033D031CD20CE39C532CD3ACE38_abfe28d4b4d1d0d337332c41ecef953d/image/tiger.jpg");
+        news.setPicUrl("http://139.129.19.66/nat123CacheFolder/34333038343130322E6E61743132332E6363/81a0f55d9df3483db8da1e36e7e68990CD30CE39D033D031CD20CE39C532CD3ACE38_abfe28d4b4d1d0d337332c41ecef953d/tiger.jpg");
         news.setUrl("www.imooc.com");
 
         newsList.add(news);
@@ -141,11 +141,54 @@ public class MessageUtil {
     }
 
 
+    //图片消息转xml
+    public static String imageMessageToXml(ImageMessage imageMessage){
+        XStream xStream = new XStream();
+        xStream.alias("xml",imageMessage.getClass());
+        return xStream.toXML(imageMessage);
+    }
 
+    //组装图片消息
+    public static String initImageMessage(String toUserName,String fromUserName){
+        String message = null;
+        Image image = new Image();
+        image.setMediaId("3HY-tHyErsoijKX0buBeo476BTZeUV7pnl5FdOFtSqpA5SZwgxdCZt5OWmMxaVxz");
+        ImageMessage imageMessage = new ImageMessage();
+        imageMessage.setFromUserName(toUserName);
+        imageMessage.setToUserName(fromUserName);
+        imageMessage.setMsgType(MESSAGE_IMAGE);
+        imageMessage.setCreateTime(new Date().getTime());
+        imageMessage.setImage(image);
+        message = imageMessageToXml(imageMessage);
+        return message;
+    }
 
+    //音乐消息转为xml
+    public static String musicMessageToXML(MusicMessage musicMessage){
+        XStream xStream = new XStream();
+        xStream.alias("xml",musicMessage.getClass());
+        return xStream.toXML(musicMessage);
+    }
 
+    //组装音乐消息
+    public static String initMusicMessage(String toUserName,String fromUserName){
+        String message = null;
+        Music music = new Music();
+        music.setThumbMediaId("3HY-tHyErsoijKX0buBeozG_LZEefw8K7AKcrpLm6-tTiG4mfU017cQFoahKLQHo");
+        music.setTitle("南山南");
+        music.setDescription("南山南");
+        music.setMusicUrl("http://139.129.19.66/nat123CacheFolder/34333038343130322E6E61743132332E6363/81a0f55d9df3483db8da1e36e7e68990CD30CE39D033D031CD20CE39C532CD3ACE38_abfe28d4b4d1d0d337332c41ecef953d/nsn.mp3");
+        music.setHQMusicUrl("http://139.129.19.66/nat123CacheFolder/34333038343130322E6E61743132332E6363/81a0f55d9df3483db8da1e36e7e68990CD30CE39D033D031CD20CE39C532CD3ACE38_abfe28d4b4d1d0d337332c41ecef953d/nsn.mp3");
 
-
+        MusicMessage musicMessage = new MusicMessage();
+        musicMessage.setFromUserName(toUserName);
+        musicMessage.setToUserName(fromUserName);
+        musicMessage.setMsgType(MESSAGE_MUSIC);
+        musicMessage.setCreateTime(new Date().getTime());
+        musicMessage.setMusic(music);
+        message = musicMessageToXML(musicMessage);
+        return message;
+    }
 
 
 

@@ -61,15 +61,31 @@ public class GZHController {
                 message = MessageUtil.initNewsMessage(toUserName,fromUserName);
             }else if("3".equals(content)){
                 message = MessageUtil.initText(toUserName, fromUserName, MessageUtil.threeMenu());
-            }else if("?".equals(content) || "？".equals(content)){
+            }else if ("4".equals(content)) {
+                message = MessageUtil.initImageMessage(toUserName,fromUserName);
+            }else if("5".equals(content)){
+                message = MessageUtil.initMusicMessage(toUserName,fromUserName);
+            } else if ("?".equals(content) || "？".equals(content)) {
                 message = MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
             }
         }else if(MessageUtil.MESSAGE_EVNET.equals(msgType)){
             String eventType = map.get("Event");
             if (MessageUtil.MESSAGE_SUBSCRIBE.equals(eventType)) {
                 message = MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
+            }else if(MessageUtil.MESSAGE_CLICK.equals(eventType)){
+                message = MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
+            }else if(MessageUtil.MESSAGE_VIEW.equals(eventType)){
+                String url = map.get("EventKey");
+                message = MessageUtil.initText(toUserName, fromUserName, url);
+            }else if(MessageUtil.MESSAGE_SUBSCRIBE.equals(eventType)){
+                String key = map.get("EventKey");
+                message = MessageUtil.initText(toUserName, fromUserName, key);
             }
+        }else if(MessageUtil.MESSAGE_LOCATION.equals(message)){
+            String label = map.get("Label");
+            message = MessageUtil.initText(toUserName, fromUserName, label);
         }
+        System.out.println(message);
         out.print(message);
     }
 

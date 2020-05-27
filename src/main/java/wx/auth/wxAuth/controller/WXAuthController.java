@@ -51,6 +51,23 @@ public class WXAuthController {
     }
 
 
+    @RequestMapping("/receiveUrl")
+    public void receiveUrl(HttpServletRequest request){
+        //String app_id,String data,String salt,String signature
+        //System.out.println("接收到了"+app_id+"==="+data+"salt"+"----"+salt+"signature:"+signature);
+        System.out.println(request.getParameter("app_id"));
+        System.out.println(request.getParameter("data"));
+        System.out.println(request.getParameter("salt"));
+        System.out.println(request.getParameter("signature"));
+    }
+
+    @GetMapping("/getdata")
+    public void getData(String data){
+        System.out.println(data);
+        JSONObject object = new JSONObject(data);
+        System.out.println(object);
+    }
+
 
 
 
